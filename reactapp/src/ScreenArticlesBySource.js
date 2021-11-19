@@ -9,6 +9,7 @@ const { Meta } = Card;
 
 function ScreenArticlesBySource(props) {
 
+  // 2b8e328399ff410a85a40b7a224ed953
   const [articleList, setArticleList] = useState([])
 
   const [visible, setVisible] = useState(false)
@@ -19,7 +20,7 @@ function ScreenArticlesBySource(props) {
 
   useEffect(() => {
     const findArticles = async() => {
-      const data = await fetch(`https://newsapi.org/v2/top-headlines?sources=${id}&apiKey=b32c8b844d1243b1a7998d8228910f50`)
+      const data = await fetch(`https://newsapi.org/v2/top-headlines?sources=${id}&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
       const body = await data.json()
       console.log(body)
       setArticleList(body.articles) 

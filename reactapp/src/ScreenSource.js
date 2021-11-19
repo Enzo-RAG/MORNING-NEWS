@@ -10,7 +10,7 @@ function ScreenSource(props) {
   const [sourceList, setSourceList] = useState([])
   const [selectedLang, setSelectedLang] = useState(props.selectedLang)
 
-
+  // 2b8e328399ff410a85a40b7a224ed953
   useEffect(() => {
     const APIResultsLoading = async() => {
       var langue = 'fr'
@@ -21,7 +21,7 @@ function ScreenSource(props) {
         var country = 'us'
       }
       props.changeLang(selectedLang)
-      const data = await fetch(`https://newsapi.org/v2/sources?language=${langue}&country=${country}&apiKey=b32c8b844d1243b1a7998d8228910f50`)
+      const data = await fetch(`https://newsapi.org/v2/sources?language=${langue}&country=${country}&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
       const body = await data.json()
       setSourceList(body.sources)
     }
