@@ -1,10 +1,18 @@
 var express = require('express');
 var router = express.Router();
-
+var request = require('sync-request')
 var uid2 = require('uid2')
 var bcrypt = require('bcrypt');
 
 var userModel = require('../models/users')
+//https://newsapi.org/v2/sources?language=${langue}&country=${country}&apiKey=7ac9fc4a5bf54195a7934340699c34a5
+router.get('/getArticles', async function(req,res,next){
+  var data = request('GET',`https://newsapi.org/v2/sources?language=fr&country=fr&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
+  console.log('******************************************  Youhou !!!! ******************************************************')
+  var dataParse =JSON.parse(data.body)
+  res.json({dataParse})
+}) 
+
 
 
 router.post('/sign-up', async function(req,res,next){
