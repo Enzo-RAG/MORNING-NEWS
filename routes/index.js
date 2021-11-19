@@ -16,8 +16,8 @@ router.get('/getArticles', async function(req,res,next){
   res.json({dataParse})
 }) 
 
-router.get('/screenArticlesBySource', async function(req,res,next){
-  var id = "le-monde"
+router.post('/screenArticlesBySource', async function(req,res,next){
+  var id = req.body.id
   console.log(id)
   var data = request('GET',`https://newsapi.org/v2/top-headlines?sources=${id}&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
   var dataParse =JSON.parse(data.body)

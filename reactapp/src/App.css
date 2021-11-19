@@ -63,4 +63,6 @@ h4 {
 
 }
 
-
+.salut:hover{
+  transform: rotate(45deg);
+}

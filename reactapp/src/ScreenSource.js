@@ -4,6 +4,8 @@ import './App.css';
 import { List, Avatar} from 'antd';
 import Nav from './Nav'
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
 
 function ScreenSource(props) {
 
@@ -29,20 +31,25 @@ function ScreenSource(props) {
     APIResultsLoading()
   }, [selectedLang])
 
-  var handleSourceClick = async (id) => {
-    console.log("source clicked")
-    const data = await fetch(`/screenArticlesBySource?id=${id}`)
-    const body = await data.json()
-    console.log(body)
-  }
+  // var handleSourceClick = async (id) => {
+  //   // console.log("source clicked")
+  //   // var rawResponse = await fetch('/screenArticlesBySource', {
+  //   //   method: 'POST',
+  //   //   headers: {'Content-Type':'application/x-www-form-urlencoded'},
+  //   //   body: `id=${id}`
+  //   //   });
+  //   // const response = await rawResponse.json() 
+  //   // console.log(response)
+  // }
+  
 
   return (
     <div>
         <Nav/>
        
        <div style={{display:'flex', justifyContent:'center', alignItems:'center'}} className="Banner">
-          <img style={{width:'40px', margin:'10px',cursor:'pointer'}} src='/images/fr.png' onClick={() => setSelectedLang('fr')} />
-          <img style={{width:'40px', margin:'10px',cursor:'pointer'}} src='/images/uk.png' onClick={() => setSelectedLang('en')} /> 
+          <img className="salut" style={{width:'40px', margin:'10px',cursor:'pointer'}} src='/images/fr.png' onClick={() => setSelectedLang('fr')} />
+          <img className="salut" style={{width:'40px', margin:'10px',cursor:'pointer'}} src='/images/uk.png' onClick={() => setSelectedLang('en')} /> 
         </div>
 
        <div className="HomeThemes">
@@ -52,9 +59,9 @@ function ScreenSource(props) {
                   dataSource={sourceList}
                   renderItem={source => (
                     <List.Item>
-                      <List.Item.Meta onClick={() => handleSourceClick(source.id)}
+                       <List.Item.Meta /*{onClick={() => handleSourceClick(source.id)}} */
                         avatar={<Avatar src={`/images/${source.category}.png`} />}
-                        title={source.name}
+                        title={<Link to={`/screenarticlesbysource/${source.id}`} > {source.name} </Link>}
                         description={source.description}
                       />
                     </List.Item>

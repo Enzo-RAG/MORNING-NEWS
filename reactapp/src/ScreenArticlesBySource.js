@@ -16,18 +16,22 @@ function ScreenArticlesBySource(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  // var { id } = useParams();
+  var { id } = useParams();
 
-  // useEffect(() => {
-  //   const findArticles = async() => {
-  //     console.log("test")
-  //     const data = await fetch(`/screenArticlesBySource?id=${id}`)
-  //     const body = await data.json()
-  //     setArticleList(body.articles) 
-  //   }
+  useEffect(() => {
+    const findArticles = async(id) => {
+      var rawResponse = await fetch('/screenArticlesBySource', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `id=${id}`
+        });
+      const response = await rawResponse.json() 
+      console.log(response)
+      setArticleList(response.dataParse.articles) 
+    }
 
-  //   findArticles()    
-  // },[])
+    findArticles(id)    
+  },[])
 
   var showModal = (title, content) => {
     setVisible(true)
