@@ -13,6 +13,13 @@ export default function(wishList = [], action){
 
         if(!findArticle){
             wishListCopy.push(action.articleLiked)
+            fetch('/addToWhishlist', {
+                method:"POST",
+                headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                body: `title=${action.articleLiked.title}&img=${action.articleLiked.urlToImage}&description=${action.articleLiked.description}&token=${action.userToken}`
+            })
+
+            console.log(action.userToken)
         }
         
         return wishListCopy

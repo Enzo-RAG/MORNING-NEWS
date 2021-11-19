@@ -25,23 +25,18 @@ router.post('/screenArticlesBySource', async function(req,res,next){
 })
 
 router.post('/addToWhishlist', async function(req, res, next) {
-console.log(req.body.token)
 
 //Get user id
 const user = await userModel.findOne({
   token: req.body.token
 })
 
-console.log(user._id)
-
-
-  console.log("route /addtowishlist")
   var data = await wishlistModel.findOne({
     articleTitle: req.body.title
   })
 
   if(!data) {
-    console.log("nouvel article")
+
     var newArticle = new wishlistModel({
       articleTitle: req.body.title,
       articleImg: req.body.img,
@@ -52,21 +47,30 @@ console.log(user._id)
   saveArticle = await newArticle.save();
   
   } else {
-    console.log(" article existant")
-    console.log("$$$$$$$$$$$$:",user.id)
+
     if(!data.articleUsers.includes(user._id)){
-      console.log("tittre :",req.body.title)
-      var userToPush = await wishlistModel.updateOne(
+      await wishlistModel.updateOne(
         { articleTitle: req.body.title},
         {$push: {articleUsers: user._id}}
        );
-      console.log(" article trouvé:",userToPush)
       data = await wishlistModel.findOne({
         articleTitle: req.body.title
       })
     } 
   }
   res.json({data})
+})
+
+router.post('/displayWishlist', async function(req, res, next) {
+  const user = await userModel.findOne({
+    token: req.body.token
+  });
+  console.log(user)
+  var articles = await wishlistModel.findOne({
+    articleUsers: user._id
+  })
+  
+  res.json(articles)
 })
 
 router.post('/sign-up', async function(req,res,next){

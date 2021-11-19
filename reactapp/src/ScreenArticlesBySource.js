@@ -77,7 +77,7 @@ function ScreenArticlesBySource(props) {
                   }
                   actions={[
                       <Icon type="read" key="ellipsis2" onClick={() => showModal(article.title,article.content)} />,
-                      <Icon type="like" key="ellipsis" onClick={()=> {props.addToWishList(article)}} />
+                      <Icon type="like" key="ellipsis" onClick={()=> {props.addToWishList(article, props.token)}} />
                   ]}
                   >
 
@@ -112,17 +112,22 @@ function ScreenArticlesBySource(props) {
   );
 }
 
+function mapStateToProps(state){
+  return {token: state.token}
+}
+
 function mapDispatchToProps(dispatch){
   return {
-    addToWishList: function(article){
+    addToWishList: function(article, token){
       dispatch({type: 'addArticle',
-        articleLiked: article
+        articleLiked: article,
+        userToken: token
       })
     }
   }
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ScreenArticlesBySource)
