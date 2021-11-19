@@ -29,19 +29,7 @@ function ScreenSource(props) {
     }
 
     APIResultsLoading()
-  }, [selectedLang])
-
-  // var handleSourceClick = async (id) => {
-  //   // console.log("source clicked")
-  //   // var rawResponse = await fetch('/screenArticlesBySource', {
-  //   //   method: 'POST',
-  //   //   headers: {'Content-Type':'application/x-www-form-urlencoded'},
-  //   //   body: `id=${id}`
-  //   //   });
-  //   // const response = await rawResponse.json() 
-  //   // console.log(response)
-  // }
-  
+  }, [selectedLang]) 
 
   return (
     <div>
