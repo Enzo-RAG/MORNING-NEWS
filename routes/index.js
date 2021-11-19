@@ -5,15 +5,38 @@ var uid2 = require('uid2')
 var bcrypt = require('bcrypt');
 
 var userModel = require('../models/users')
+var wishlistModel = require('../models/wishlist')
+
+
+
 //https://newsapi.org/v2/sources?language=${langue}&country=${country}&apiKey=7ac9fc4a5bf54195a7934340699c34a5
 router.get('/getArticles', async function(req,res,next){
   var data = request('GET',`https://newsapi.org/v2/sources?language=fr&country=fr&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
-  console.log('******************************************  Youhou !!!! ******************************************************')
   var dataParse =JSON.parse(data.body)
   res.json({dataParse})
 }) 
 
+router.get('/screenArticlesBySource', async function(req,res,next){
+  var id = "le-monde"
+  console.log(id)
+  var data = request('GET',`https://newsapi.org/v2/top-headlines?sources=${id}&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
+  var dataParse =JSON.parse(data.body)
+  res.json({dataParse})
+})
 
+router.post('/addToWhishlist', async function(req, res, next) {
+  var newArticle = new wishlistModel({
+    articleTitle: req.body.title,
+    articleImg: req.body.img,
+    articleContent: req.body.content,
+    articleDescription: req.body.description,
+    userId: req.body.user,
+  })
+
+  saveArticle = await newArticle.save();
+
+  res.json({saveArticle})
+})
 
 router.post('/sign-up', async function(req,res,next){
 

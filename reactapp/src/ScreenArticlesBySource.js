@@ -16,18 +16,18 @@ function ScreenArticlesBySource(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  var { id } = useParams();
+  // var { id } = useParams();
 
-  useEffect(() => {
-    const findArticles = async() => {
-      const data = await fetch(`https://newsapi.org/v2/top-headlines?sources=${id}&apiKey=7ac9fc4a5bf54195a7934340699c34a5`)
-      const body = await data.json()
-      console.log(body)
-      setArticleList(body.articles) 
-    }
+  // useEffect(() => {
+  //   const findArticles = async() => {
+  //     console.log("test")
+  //     const data = await fetch(`/screenArticlesBySource?id=${id}`)
+  //     const body = await data.json()
+  //     setArticleList(body.articles) 
+  //   }
 
-    findArticles()    
-  },[])
+  //   findArticles()    
+  // },[])
 
   var showModal = (title, content) => {
     setVisible(true)

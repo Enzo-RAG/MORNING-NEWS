@@ -29,6 +29,13 @@ function ScreenSource(props) {
     APIResultsLoading()
   }, [selectedLang])
 
+  var handleSourceClick = async (id) => {
+    console.log("source clicked")
+    const data = await fetch(`/screenArticlesBySource?id=${id}`)
+    const body = await data.json()
+    console.log(body)
+  }
+
   return (
     <div>
         <Nav/>
@@ -45,9 +52,9 @@ function ScreenSource(props) {
                   dataSource={sourceList}
                   renderItem={source => (
                     <List.Item>
-                      <List.Item.Meta
+                      <List.Item.Meta onClick={() => handleSourceClick(source.id)}
                         avatar={<Avatar src={`/images/${source.category}.png`} />}
-                        title={<Link to={`/screenarticlesbysource/${source.id}`}>{source.name}</Link>}
+                        title={source.name}
                         description={source.description}
                       />
                     </List.Item>
