@@ -4,8 +4,8 @@ var request = require('sync-request')
 var uid2 = require('uid2')
 var bcrypt = require('bcrypt');
 
-var wishlistModels = require('../models/wishlist')
-console.log(wishlistModels)
+var wishlistModel = require('../models/wishlist')
+var userModel = require('../models/users')
 
 
 
@@ -25,17 +25,48 @@ router.post('/screenArticlesBySource', async function(req,res,next){
 })
 
 router.post('/addToWhishlist', async function(req, res, next) {
-  var newArticle = new wishlistModels.wishlistModel({
-    articleTitle: req.body.title,
-    articleImg: req.body.img,
-    articleContent: req.body.content,
-    articleDescription: req.body.description,
-    userId: req.body.user,
+console.log(req.body.token)
+
+//Get user id
+const user = await userModel.findOne({
+  token: req.body.token
+})
+
+console.log(user._id)
+
+
+  console.log("route /addtowishlist")
+  var data = await wishlistModel.findOne({
+    articleTitle: req.body.title
   })
 
+  if(!data) {
+    console.log("nouvel article")
+    var newArticle = new wishlistModel({
+      articleTitle: req.body.title,
+      articleImg: req.body.img,
+      articleContent: req.body.content,
+      articleDescription: req.body.description,
+      articleUsers: user._id,
+    })
   saveArticle = await newArticle.save();
-
-  res.json({saveArticle})
+  
+  } else {
+    console.log(" article existant")
+    console.log("$$$$$$$$$$$$:",user.id)
+    if(!data.articleUsers.includes(user._id)){
+      console.log("tittre :",req.body.title)
+      var userToPush = await wishlistModel.updateOne(
+        { articleTitle: req.body.title},
+        {$push: {articleUsers: user._id}}
+       );
+      console.log(" article trouvé:",userToPush)
+      data = await wishlistModel.findOne({
+        articleTitle: req.body.title
+      })
+    } 
+  }
+  res.json({data})
 })
 
 router.post('/sign-up', async function(req,res,next){
@@ -45,7 +76,7 @@ router.post('/sign-up', async function(req,res,next){
   var saveUser = null
   var token = null
 
-  const data = await wishlistModels.userModel.findOne({
+  const data = await userModel.findOne({
     email: req.body.emailFromFront
   })
 
@@ -64,7 +95,7 @@ router.post('/sign-up', async function(req,res,next){
   if(error.length == 0){
 
     var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
-    var newUser = new wishlistModels.userModel({
+    var newUser = new userModel({
       username: req.body.usernameFromFront,
       email: req.body.emailFromFront,
       password: hash,
@@ -98,7 +129,7 @@ router.post('/sign-in', async function(req,res,next){
   }
 
   if(error.length == 0){
-    user = await wishlistModels.userModel.findOne({
+    user = await userModel.findOne({
       email: req.body.emailFromFront,
     })
   
